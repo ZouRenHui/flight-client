@@ -13,7 +13,7 @@ const Login = ({ setUser }) => {
 
     try {
       const response = await api.post(
-        "http://localhost:8080/api/auth/login",
+        "/auth/login",
         {
           email: email,
           password: password,

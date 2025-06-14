@@ -104,7 +104,7 @@ const SearchForm = ({ onSearch }) => {
         const token = localStorage.getItem("token") || "";
 
         // 发送 API 请求
-        const response = await api.get("http://localhost:8080/api/flights", {
+        const response = await api.get("/flights", {
           params,
           headers: {
             "Content-Type": "application/json",

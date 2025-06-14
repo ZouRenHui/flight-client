@@ -31,7 +31,7 @@ function Passenger() {
   const fetchPassengers = async (userId) => {
     try {
       console.log("userId: " + userId);
-      const res = await api.get(`http://localhost:8080/api/passenger`, {
+      const res = await api.get(`/passenger`, {
         params: { userId },
         headers: {
           "Content-Type": "application/json",
@@ -47,7 +47,7 @@ function Passenger() {
 
   const handleDelete = async (id) => {
     try {
-      await api.delete(`http://localhost:8080/api/passenger/delete/${id}`,{
+      await api.delete(`/passenger/delete/${id}`,{
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -67,7 +67,7 @@ function Passenger() {
       return;
 
     try {
-      const res = await api.post(`http://localhost:8080/api/passenger/create`, {
+      const res = await api.post(`/passenger/create`, {
         ...newPassenger,
         headers: {
           "Content-Type": "application/json",

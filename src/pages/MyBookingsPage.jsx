@@ -21,7 +21,7 @@ function MyBookingsPage() {
 
   const fetchBookings = async (userId) => {
     try {
-      const res = await api.get("http://localhost:8080/api/booking/getHistory", {
+      const res = await api.get("/booking/getHistory", {
         params: { userId },
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +77,7 @@ function MyBookingsPage() {
 
   const deleteBooking = async (bookingId) => {
     try {
-      await api.delete(`http://localhost:8080/api/bookings/${bookingId}`, {
+      await api.delete(`/bookings/${bookingId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
