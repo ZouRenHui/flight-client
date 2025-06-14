@@ -16,6 +16,7 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
   IMAGE_TAG: ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.$AWS_REGION.amazonaws.com/${{secrets.ECR_REPOSITORY}}:latest
   TASK_DEFINITION_FILE: task-definition.json
+  AWS_ACCOUNT_ID: ${{secrets.AWS_ACCOUNT_ID}}
 
 jobs:
   deploy:
