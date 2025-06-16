@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL
+  // baseURL:  'http://13.239.121.142:8080/api'
 });
 
 // 请求拦截器：自动添加 token
