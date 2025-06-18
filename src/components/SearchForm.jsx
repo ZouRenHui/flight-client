@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useRoutes } from "react-router-dom";
 import api from "../services/http";
 
-const SearchForm = ({ onSearch }) => {
+const SearchForm = ({ onSearch, onTripTypeChange }) => {
   const [searchParams, setSearchParams] = useState({
     depCity: "",
     arrCity: "",
@@ -133,6 +133,9 @@ const SearchForm = ({ onSearch }) => {
         // 存储日期信息
         localStorage.setItem("depDate", searchParams.departureDate);
         localStorage.setItem("returnDate", searchParams.returnDate || "");
+        localStorage.setItem("outboundFlight", null);
+        localStorage.setItem("returnFlight", null);
+        localStorage.setItem("bookingNo", null);
 
         //navigate("/flights");
       } catch (error) {
@@ -161,9 +164,12 @@ const SearchForm = ({ onSearch }) => {
       returnDate: type === 1 ? "" : searchParams.returnDate,
     });
 
-    // 清除返回日期的错误
     if (type === 1 && errors.returnDate) {
       setErrors({ ...errors, returnDate: "" });
+    }
+
+    if (onTripTypeChange) {
+      onTripTypeChange(type); // 通知父组件
     }
   };
 

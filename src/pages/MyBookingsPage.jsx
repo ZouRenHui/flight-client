@@ -75,13 +75,18 @@ function MyBookingsPage() {
     }
   };
 
-  const deleteBooking = async (bookingId) => {
+  const deleteBooking = async (bookingNo) => {
     try {
-      await api.delete(`/bookings/${bookingId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await api.delete(
+        `/bookings/delete/${bookingNo}`,
+        {}, // 空请求体
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       // 删除后刷新列表
       if (user) {
         fetchBookings(user.userId);
@@ -94,7 +99,10 @@ function MyBookingsPage() {
   const renderList = (list) => (
     <div className="space-y-4 mt-4">
       {list.map((item, index) => (
-        <div key={index} className="bg-white rounded shadow p-4 flex justify-between items-start">
+        <div
+          key={index}
+          className="bg-white rounded shadow p-4 flex justify-between items-start"
+        >
           <div>
             <div className="text-lg font-semibold">{item.passenger}</div>
             <div className="text-sm text-gray-700">
@@ -112,7 +120,7 @@ function MyBookingsPage() {
             <div className="text-sm text-gray-700">Price: ¥{item.price}</div>
           </div>
           <button
-            onClick={() => deleteBooking(item.bookingId)}
+            onClick={() => deleteBooking(item.bookingNo)}
             className="ml-4 text-red-600 hover:text-red-800 font-medium"
           >
             Delete

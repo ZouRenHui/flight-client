@@ -1,12 +1,23 @@
 import React, { useState } from "react";
-import { useNavigate, useRoutes } from "react-router-dom";
-import api from '../services/http';
+import { useNavigate, Link } from "react-router-dom";
+import api from "../services/http";
 
 const Login = ({ setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [showRegister, setShowRegister] = useState(false);
+  const [registerData, setRegisterData] = useState({
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    gender: "",
+    country: "",
+    phone: "",
+  });
+  const [registerError, setRegisterError] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -65,6 +76,20 @@ const Login = ({ setUser }) => {
     }
   };
 
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setRegisterError("");
+    try {
+      const response = await api.post("/auth/createUser", registerData);
+      alert("User created successfully. You can now log in.");
+      setShowRegister(false);
+    } catch (err) {
+      let msg = "Registration failed.";
+      if (err.response?.data?.message) msg = err.response.data.message;
+      setRegisterError(msg);
+    }
+  };
+
   return (
     <div className="w-full flex justify-center items-center h-screen bg-gray-100">
       <form
@@ -99,7 +124,113 @@ const Login = ({ setUser }) => {
         >
           Login
         </button>
+        <p className="text-sm text-center mt-4">
+          Don't have an account?{" "}
+          <button
+            type="button"
+            onClick={() => setShowRegister(true)}
+            className="text-blue-500 hover:underline"
+          >
+            Create a new user
+          </button>
+        </p>
       </form>
+
+      {showRegister && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded shadow-lg w-[400px] relative">
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-black"
+              onClick={() => setShowRegister(false)}
+            >
+              ✕
+            </button>
+            <h2 className="text-xl font-bold mb-4">Create New User</h2>
+            {registerError && <p className="text-red-500">{registerError}</p>}
+            <form onSubmit={handleRegister} className="space-y-3">
+              <input
+                type="email"
+                placeholder="Email"
+                className="w-full p-2 border rounded"
+                value={registerData.email}
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, email: e.target.value })
+                }
+                required
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                className="w-full p-2 border rounded"
+                value={registerData.password}
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, password: e.target.value })
+                }
+                required
+              />
+              <input
+                type="text"
+                placeholder="First Name"
+                className="w-full p-2 border rounded"
+                value={registerData.firstName}
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    firstName: e.target.value,
+                  })
+                }
+              />
+              <input
+                type="text"
+                placeholder="Last Name"
+                className="w-full p-2 border rounded"
+                value={registerData.lastName}
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, lastName: e.target.value })
+                }
+              />
+              <select
+                className="w-full p-2 border rounded"
+                value={registerData.gender}
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    gender: parseInt(e.target.value),
+                  })
+                }
+              >
+                <option value="">Select Gender</option>
+                <option value="0">Male</option>
+                <option value="1">Female</option>
+              </select>
+              <input
+                type="text"
+                placeholder="Country"
+                className="w-full p-2 border rounded"
+                value={registerData.country}
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, country: e.target.value })
+                }
+              />
+              <input
+                type="text"
+                placeholder="Phone"
+                className="w-full p-2 border rounded"
+                value={registerData.phone}
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, phone: e.target.value })
+                }
+              />
+              <button
+                type="submit"
+                className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600"
+              >
+                Register
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
